@@ -2,6 +2,7 @@ package handler
 
 import(
     "log"
+    "errors"
     "net/http"
     "os"
     "text/template"
@@ -46,4 +47,22 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     t.ExecuteTemplate(w, "index", map[string]interface{}{
         "Content": result,
     })
+}
+
+func Main() {
+    log.Println("Initializing server...")
+
+    s := http.NewServeMux()
+
+    s.HandleFunc("GET /", Handler)
+    s.HandleFunc("GET /{password}", Handler)
+
+    err := http.ListenAndServe(":8000", s); if err != nil {
+        if errors.Is(err, http.ErrServerClosed) {
+            log.Println("Server closed.")
+        } else {
+            log.Println("Error starting server:", err)
+            os.Exit(1)
+        }
+    }
 }
