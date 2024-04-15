@@ -1,0 +1,36 @@
+{{ block "index" . }}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>pswdEntropy</title>
+</head>
+<body>
+    <h1>Check Your Password Entropy</h1>
+    <input type="text">
+    <button>Check</button>
+
+    {{ if .Content }}
+    <p>Password: {{ .Content.Password }}</p>
+    <p>Entropy: {{ .Content.Value }}</p>
+    <p>Message: {{ .Content.Message }}</p>
+    {{ end }}
+
+    <h1>How It Works</h1>
+    <p>The base value to compare your password is set to 60, acording to that, the message will tell how to improve. Basicaly the more entropy you have, the more secure your password will be.</p>
+    <p>Check the explanation on : <a href="https://github.com/wagslane/go-password-validator">github.com/wagslane/go-password-validator</a></p>
+
+    <script>
+        var pswd = ""
+        document.querySelector('input').addEventListener('input', (e) => {
+            pswd = e.target.value
+        })
+        document.querySelector('button').addEventListener('click', () => {
+            window.location.href = '/' + pswd
+        })
+    </script>
+</body>
+</html>
+{{ end }}
